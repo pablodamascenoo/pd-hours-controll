@@ -1,0 +1,41 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model Squad {
+  id    Int        @id @default(autoincrement())
+  name  String     @unique
+  users Employee[]
+
+  @@map("squads")
+}
+
+model Report {
+  id          Int      @id @default(autoincrement())
+  description String
+  spentHours  Int
+  createdAt   DateTime
+  employee    Employee @relation(fields: [employeeId], references: [id])
+  employeeId  Int
+
+  @@map("reports")
+}
+
+model Employee {
+  id             Int      @id @default(autoincrement())
+  name           String
+  estimatedHours Int
+  reports        Report[]
+  Squad          Squad    @relation(fields: [squadId], references: [id])
+  squadId        Int
+
+  @@map("employees")
+}
