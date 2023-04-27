@@ -2,6 +2,18 @@
 @tailwind components;
 @tailwind utilities;
 
-*{
+:root {
+  --base-blue: #4263eb;
+  --hover-blue: #2342c0;
+  --base-purple: #7048e8;
+  --base-pink: #f784ad;
+  --base-black: #212429;
+  --gray-1: #f8f9fa;
+  --gray-2: #dde2e5;
+  --gray-3: #acb5bd;
+  --gray-4: #495057;
+}
+
+* {
   box-sizing: border-box;
 }

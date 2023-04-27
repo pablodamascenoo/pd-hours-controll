@@ -9,6 +9,7 @@ module.exports = {
     extend: {
       colors: {
         "base-blue": "#4263EB",
+        "hover-blue": "#2342C0",
         "base-purple": "#7048E8",
         "base-pink": "#F784AD",
         "base-black": "#212429",
