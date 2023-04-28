@@ -3,11 +3,14 @@ import Image from "next/image";
 import Logo from "../../public/pd_icon.svg";
 import Button from "@/components/Button";
 import { useState } from "react";
+import Squads from "@/components/Squads";
 
 export default function Home() {
   const [page, setPage] = useState<"squads" | "users">("squads");
   return (
-    <main className={`bg-gray-1 flex min-h-screen flex-col text-base-black`}>
+    <main
+      className={`bg-gray-1 flex min-h-screen flex-col text-base-black relative`}
+    >
       <header className="w-full bg-white h-[235px] px-[160px] pt-4 border-b-[1px] border-gray-2">
         <div className="w-full flex justify-between">
           <Image src={Logo} width={50} alt="pd logo" />
@@ -52,6 +55,7 @@ export default function Home() {
           </button>
         </div>
       </header>
+      <Squads />
     </main>
   );
 }
