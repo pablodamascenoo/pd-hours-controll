@@ -6,6 +6,8 @@ import { useState } from "react";
 import Squads from "@/components/Squads";
 import SquadModal from "@/components/SquadModal";
 import { AnimatePresence } from "framer-motion";
+import Users from "@/components/Users";
+import UserModal from "@/components/UserModal";
 
 export default function Home() {
   const [page, setPage] = useState<"squads" | "users">("squads");
@@ -15,6 +17,19 @@ export default function Home() {
     switch (modal) {
       case "squad":
         return <SquadModal handleClose={handleClose} />;
+      case "user":
+        return <UserModal handleClose={handleClose} />;
+      default:
+        break;
+    }
+  }
+
+  function handlePage() {
+    switch (page) {
+      case "squads":
+        return <Squads changeModal={changeModal} />;
+      case "users":
+        return <Users changeModal={changeModal} />;
       default:
         break;
     }
@@ -77,7 +92,7 @@ export default function Home() {
         </div>
       </header>
       <AnimatePresence>{handleModal()}</AnimatePresence>
-      <Squads changeModal={changeModal} />
+      {handlePage()}
     </main>
   );
 }

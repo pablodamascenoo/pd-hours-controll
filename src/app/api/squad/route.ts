@@ -6,6 +6,19 @@ const prisma = new PrismaClient();
 export async function POST(request: Request) {
   const { name } = await request.json();
 
+  const find = await prisma.squad.findFirst({
+    where: {
+      name,
+    },
+  });
+
+  if (find) {
+    return NextResponse.json(
+      { message: "Squad já cadastrado" },
+      { status: 409 }
+    );
+  }
+
   const res = await prisma.squad.create({
     data: {
       name,
