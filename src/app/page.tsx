@@ -4,9 +4,30 @@ import Logo from "../../public/pd_icon.svg";
 import Button from "@/components/Button";
 import { useState } from "react";
 import Squads from "@/components/Squads";
+import SquadModal from "@/components/SquadModal";
+import { AnimatePresence } from "framer-motion";
 
 export default function Home() {
   const [page, setPage] = useState<"squads" | "users">("squads");
+  const [modal, setModal] = useState<"squad" | "user" | "report" | "">("");
+
+  function handleModal() {
+    switch (modal) {
+      case "squad":
+        return <SquadModal handleClose={handleClose} />;
+      default:
+        break;
+    }
+  }
+
+  function changeModal(type: "squad" | "user" | "report" | "") {
+    setModal(type);
+  }
+
+  function handleClose() {
+    return setModal("");
+  }
+
   return (
     <main
       className={`bg-gray-1 flex min-h-screen flex-col text-base-black relative`}
@@ -55,7 +76,8 @@ export default function Home() {
           </button>
         </div>
       </header>
-      <Squads />
+      <AnimatePresence>{handleModal()}</AnimatePresence>
+      <Squads changeModal={changeModal} />
     </main>
   );
 }

@@ -6,7 +6,11 @@ import SadFace from "@/../public/emoji_notfound.svg";
 import Image from "next/image";
 import Button from "./Button";
 
-export default function Squads() {
+type Props = {
+  changeModal: (text: "squad" | "user" | "report" | "") => void;
+};
+
+export default function Squads({ changeModal }: Props) {
   const [squads, setSquads] = useState<Squad[]>([]);
 
   useEffect(() => {
@@ -65,7 +69,7 @@ export default function Squads() {
             })}
           </table>
         )}
-        <Button>Criar Squad</Button>
+        <Button onClick={() => changeModal("squad")}>Criar Squad</Button>
       </div>
     </section>
   );
