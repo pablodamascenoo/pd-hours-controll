@@ -7,12 +7,9 @@ import Input from "./Input";
 import Button from "./Button";
 import LoaderSpinner from "./LoaderSpinner";
 import ErrorCard from "./ErrorCard";
+import { AnimatePresence } from "framer-motion";
 
-type Props = {
-  handleClose: () => void;
-};
-
-export default function UserModal({ handleClose }: Props) {
+export default function UserModal() {
   const [submited, setSubmited] = useState(false);
   const [error, setError] = useState({
     text: "",
@@ -23,6 +20,7 @@ export default function UserModal({ handleClose }: Props) {
     name: "",
     squadId: 0,
   });
+  const [showModal, setShowModal] = useState(false);
 
   function handleSubmit(e: FormEvent) {
     e.preventDefault();
@@ -60,64 +58,78 @@ export default function UserModal({ handleClose }: Props) {
     });
   }
 
+  function handleModal() {
+    if (showModal)
+      return (
+        <BaseModal
+          handleClose={() => {
+            setShowModal(false);
+          }}
+        >
+          <h2 className="font-medium text-[38px] mb-[64px]">Criar Usuário</h2>
+          {error.text.length > 0 ? (
+            <ErrorCard
+              text={error.text}
+              handleClose={() => setError({ ...error, text: "" })}
+            />
+          ) : (
+            <></>
+          )}
+          <form
+            onSubmit={handleSubmit}
+            className="flex flex-col justify-center items-center w-full gap-8"
+          >
+            <Input
+              title="nome do usuário"
+              value={user.name}
+              onChange={(e) => {
+                setUser({ ...user, name: e.target.value });
+              }}
+              error={error.input}
+              id="name"
+              type="text"
+              placeholder="Digite o nome do usuário"
+              disabled={submited}
+              required
+            />
+            <Input
+              title="Horas estimadas de trabalho"
+              value={user.estimatedHours}
+              onChange={(e) => {
+                setUser({ ...user, estimatedHours: parseInt(e.target.value) });
+              }}
+              error={error.input}
+              id="estimatedHours"
+              type="number"
+              placeholder="Digite a quantidade de horas"
+              disabled={submited}
+              required
+            />
+            <Input
+              title="squad"
+              value={user.squadId}
+              onChange={(e) => {
+                setUser({ ...user, squadId: parseInt(e.target.value) });
+              }}
+              error={error.input}
+              id="squadId"
+              type="number"
+              placeholder="Digite o Id da squad"
+              disabled={submited}
+              required
+            />
+            <Button type="submit" disabled={submited}>
+              {submited ? <LoaderSpinner /> : "Criar Usuário"}
+            </Button>
+          </form>
+        </BaseModal>
+      );
+  }
+
   return (
-    <BaseModal handleClose={handleClose}>
-      <h2 className="font-medium text-[38px] mb-[64px]">Criar Usuário</h2>
-      {error.text.length > 0 ? (
-        <ErrorCard
-          text={error.text}
-          handleClose={() => setError({ ...error, text: "" })}
-        />
-      ) : (
-        <></>
-      )}
-      <form
-        onSubmit={handleSubmit}
-        className="flex flex-col justify-center items-center w-full gap-8"
-      >
-        <Input
-          title="nome do usuário"
-          value={user.name}
-          onChange={(e) => {
-            setUser({ ...user, name: e.target.value });
-          }}
-          error={error.input}
-          id="name"
-          type="text"
-          placeholder="Digite o nome do usuário"
-          disabled={submited}
-          required
-        />
-        <Input
-          title="Horas estimadas de trabalho"
-          value={user.estimatedHours}
-          onChange={(e) => {
-            setUser({ ...user, estimatedHours: parseInt(e.target.value) });
-          }}
-          error={error.input}
-          id="estimatedHours"
-          type="number"
-          placeholder="Digite a quantidade de horas"
-          disabled={submited}
-          required
-        />
-        <Input
-          title="squad"
-          value={user.squadId}
-          onChange={(e) => {
-            setUser({ ...user, squadId: parseInt(e.target.value) });
-          }}
-          error={error.input}
-          id="squadId"
-          type="number"
-          placeholder="Digite o Id da squad"
-          disabled={submited}
-          required
-        />
-        <Button type="submit" disabled={submited}>
-          {submited ? <LoaderSpinner /> : "Criar Usuário"}
-        </Button>
-      </form>
-    </BaseModal>
+    <>
+      <Button onClick={() => setShowModal(true)}>Criar Usuário</Button>
+      <AnimatePresence>{handleModal()}</AnimatePresence>
+    </>
   );
 }

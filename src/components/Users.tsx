@@ -1,36 +1,35 @@
-"use client";
-
-import { Employee } from "@prisma/client";
-import React, { useEffect, useState } from "react";
+import { Employee, Squad } from "@prisma/client";
+import React from "react";
 import SadFace from "@/../public/emoji_notfound.svg";
 import Image from "next/image";
-import Button from "./Button";
+import UserModal from "./UserModal";
+import SquadModal from "./SquadModal";
 
-type Props = {
-  changeModal: (text: "squad" | "user" | "report" | "") => void;
-};
+async function getUsers() {
+  const url = process.env.NEXT_PUBLIC_BASE_URL;
 
-export default function Users({ changeModal }: Props) {
-  const [users, setUsers] = useState<Employee[]>([]);
+  const response = await fetch(url + "/api/employee");
 
-  useEffect(() => {
-    const url = process.env.NEXT_PUBLIC_BASE_URL;
+  return response.json();
+}
 
-    const response = fetch(url + "/api/employee", {
-      method: "GET",
-    });
+async function getFirstSquad() {
+  const url = process.env.NEXT_PUBLIC_BASE_URL;
 
-    response.then((res) => {
-      res.json().then((obj) => {
-        console.log(obj);
-        setUsers([...obj.employees]);
-      });
-    });
+  const response = await fetch(url + "/api/squad?findFirst=true");
 
-    response.catch((error) => {
-      console.log(error);
-    });
-  }, []);
+  return response.json();
+}
+
+export default async function Users() {
+  const usersData = getUsers();
+  const foundSquadData = getFirstSquad();
+
+  const [users, squads]: [users: Employee[], squads: Squad] = await Promise.all(
+    [usersData, foundSquadData]
+  );
+
+  console.log(users);
 
   return (
     <section className="flex flex-col gap-10 mt-[80px] ml-[168px]">
@@ -42,7 +41,9 @@ export default function Users({ changeModal }: Props) {
           <div className="flex flex-col gap-6 justify-center items-center">
             <Image src={SadFace} alt="not found" />
             <p className="text-gray-3">
-              Nenhuma squad cadastrada. Crie uma squad para começar.
+              {squads
+                ? "Nenhum usuário cadastrado. Crie um usuário para começar."
+                : "Nenhuma squad cadastrada. Crie uma squad para começar."}
             </p>
           </div>
         ) : (
@@ -73,7 +74,7 @@ export default function Users({ changeModal }: Props) {
             </tbody>
           </table>
         )}
-        <Button onClick={() => changeModal("user")}>Criar Usuário</Button>
+        {!squads ? <SquadModal /> : <UserModal />}
       </div>
     </section>
   );

@@ -24,11 +24,11 @@ export async function POST(request: Request) {
     },
   });
 
-  return NextResponse.json({ res }, { status: 201 });
+  return NextResponse.json({ ...res }, { status: 201 });
 }
 
 export async function GET(request: Request) {
   const res = await prisma.employee.findMany({});
 
-  return NextResponse.json({ employees: res }, { status: 200 });
+  return NextResponse.json([...res], { status: 200 });
 }

@@ -1,35 +1,22 @@
-"use client";
-
 import { Squad } from "@prisma/client";
 import React, { useEffect, useState } from "react";
 import SadFace from "@/../public/emoji_notfound.svg";
 import Image from "next/image";
-import Button from "./Button";
+import SquadModal from "./SquadModal";
 
-type Props = {
-  changeModal: (text: "squad" | "user" | "report" | "") => void;
-};
+async function getSquads() {
+  const url = process.env.NEXT_PUBLIC_BASE_URL;
 
-export default function Squads({ changeModal }: Props) {
-  const [squads, setSquads] = useState<Squad[]>([]);
+  const response = await fetch(url + "/api/squad");
 
-  useEffect(() => {
-    const url = process.env.NEXT_PUBLIC_BASE_URL;
+  console.log(response);
 
-    const response = fetch(url + "/api/squad", {
-      method: "GET",
-    });
+  return response.json();
+}
 
-    response.then((res) => {
-      res.json().then((obj) => {
-        setSquads([...obj.squads]);
-      });
-    });
-
-    response.catch((error) => {
-      console.log(error);
-    });
-  }, []);
+export default async function Squads() {
+  const { squads } = (await getSquads()) as { squads: Squad[] };
+  console.log(squads);
 
   return (
     <section className="flex flex-col gap-10 mt-[80px] ml-[168px]">
@@ -75,7 +62,7 @@ export default function Squads({ changeModal }: Props) {
             </tbody>
           </table>
         )}
-        <Button onClick={() => changeModal("squad")}>Criar Squad</Button>
+        <SquadModal />
       </div>
     </section>
   );

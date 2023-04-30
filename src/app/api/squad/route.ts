@@ -29,7 +29,12 @@ export async function POST(request: Request) {
 }
 
 export async function GET(request: Request) {
-  const res = await prisma.squad.findMany({});
+  const { searchParams } = new URL(request.url);
+  const findFirst = searchParams.get("findFirst");
+  const res =
+    findFirst === "true"
+      ? await prisma.squad.findFirst({})
+      : await prisma.squad.findMany({});
 
   return NextResponse.json({ squads: res }, { status: 200 });
 }
