@@ -5,12 +5,19 @@ import Image from "next/image";
 interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   title: string;
   id: string;
-  error: string;
+  error?: string;
+  style?: React.CSSProperties;
 }
 
-export default function Input({ title, id, error, ...rest }: InputProps) {
+export default function Input({
+  title,
+  id,
+  error,
+  style,
+  ...rest
+}: InputProps) {
   return (
-    <div className="flex flex-col w-full gap-2 relative">
+    <div className="flex flex-col w-full gap-2 relative" style={style}>
       <label htmlFor={id} className="font-medium text-xs text-gray-3">
         {title.toUpperCase()}
       </label>

@@ -3,20 +3,17 @@ import React, { useEffect, useState } from "react";
 import SadFace from "@/../public/emoji_notfound.svg";
 import Image from "next/image";
 import SquadModal from "./SquadModal";
+import Link from "next/link";
 
 async function getSquads() {
   const url = process.env.NEXT_PUBLIC_BASE_URL;
 
   const response = await fetch(url + "/api/squad");
-
-  console.log(response);
-
   return response.json();
 }
 
 export default async function Squads() {
   const { squads } = (await getSquads()) as { squads: Squad[] };
-  console.log(squads);
 
   return (
     <section className="flex flex-col gap-10 mt-[80px] ml-[168px]">
@@ -52,9 +49,12 @@ export default async function Squads() {
                     <td className="pl-10">{squad.id}</td>
                     <td className="pl-20 flex items-center justify-between h-[43px]">
                       <p>{squad.name}</p>
-                      <button className="bg-base-blue w-[122px] h-[33px] rounded-lg text-white mr-1">
+                      <Link
+                        href={"/squads/" + squad.id}
+                        className="bg-base-blue w-[122px] flex items-center justify-center h-[33px] rounded-lg text-white mr-1"
+                      >
                         Visitar squad
-                      </button>
+                      </Link>
                     </td>
                   </tr>
                 );
