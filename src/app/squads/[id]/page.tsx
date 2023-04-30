@@ -11,7 +11,9 @@ export default function IdSquadPage({ params }: Props) {
   const { id } = params;
 
   return (
-    <main className={`bg-gray-1 flex min-h-screen flex-col text-base-black`}>
+    <main
+      className={`bg-gray-1 flex min-h-screen flex-col text-base-black pb-[30px]`}
+    >
       {/* @ts-expect-error Server Component */}
       <SquadId id={id} />
     </main>

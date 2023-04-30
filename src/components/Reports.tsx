@@ -19,6 +19,7 @@ export default function Reports({ squadId, users }: Props) {
     startDate: "",
     endDate: "",
   });
+  let soma = 0;
 
   interface UsersReport extends Report {
     employee: {
@@ -26,7 +27,19 @@ export default function Reports({ squadId, users }: Props) {
     };
   }
 
-  const [reports, setReports] = useState<UsersReport[]>([]);
+  type dataType = {
+    startAt: string;
+    endAt: string;
+    reports: UsersReport[];
+  };
+
+  const [data, setData] = useState<dataType>({
+    startAt: "",
+    endAt: "",
+    reports: [],
+  });
+
+  const { startAt, endAt, reports } = data;
 
   function handleSubmit(e: FormEvent) {
     e.preventDefault();
@@ -37,7 +50,7 @@ export default function Reports({ squadId, users }: Props) {
 
     promise.then((res) => {
       res.json().then((obj) => {
-        setReports([...obj]);
+        setData({ ...obj });
       });
     });
 
@@ -103,6 +116,7 @@ export default function Reports({ squadId, users }: Props) {
             </thead>
             <tbody>
               {reports.map((report, index) => {
+                soma += report.spentHours;
                 const date = dayjs(report.createdAt).format("DD/MM/YYYY");
                 return (
                   <tr
@@ -121,6 +135,13 @@ export default function Reports({ squadId, users }: Props) {
               })}
             </tbody>
           </table>
+          <h3 className="text-[28px]">Horas totais da squad</h3>
+          <h1 className="text-[50px] text-base-blue">{soma}</h1>
+          <h3 className="text-[28px]">Média de horas por dia</h3>
+          <h1 className="text-[50px] text-base-blue">
+            {(soma / (dayjs(endAt).diff(startAt, "days") + 1)).toFixed(2)}{" "}
+            Horas/Dia
+          </h1>
         </div>
       )}
     </div>

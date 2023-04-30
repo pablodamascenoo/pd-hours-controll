@@ -4,6 +4,7 @@ import Logo from "../../public/pd_icon.svg";
 import Button from "@/components/Button";
 import Link from "next/link";
 import { headers } from "next/headers";
+import ReportModal from "./ReportModal";
 
 export default function Header() {
   const headersList = headers();
@@ -17,7 +18,7 @@ export default function Header() {
       </div>
       <div className="w-full flex justify-between mt-[40px] items-center">
         <h1 className="text-[50px] font-medium">PD Hours</h1>
-        <Button>Lançar horas</Button>
+        <ReportModal />
       </div>
       <div className="flex gap-[66px] mt-[20px] items-start">
         <a

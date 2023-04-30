@@ -17,7 +17,7 @@ export default function Input({
   ...rest
 }: InputProps) {
   return (
-    <div className="flex flex-col w-full gap-2 relative" style={style}>
+    <div className="flex flex-col w-full gap-2 relative z-0" style={style}>
       <label htmlFor={id} className="font-medium text-xs text-gray-3">
         {title.toUpperCase()}
       </label>

@@ -15,7 +15,10 @@ export async function GET(
   const squadId = parseInt(params.squadId);
   const { searchParams } = new URL(request.url);
   const startAt = dayjs(searchParams.get("startAt")).format();
-  const endAt = dayjs(searchParams.get("endAt")).format();
+  const endAt = dayjs(searchParams.get("endAt"))
+    .add(23, "hours")
+    .add(59, "minute")
+    .format();
 
   const reports = await prisma.report.findMany({
     include: {
@@ -36,5 +39,11 @@ export async function GET(
     },
   });
 
-  return NextResponse.json([...reports], { status: 200 });
+  const data = {
+    startAt,
+    endAt,
+    reports: [...reports],
+  };
+
+  return NextResponse.json(data, { status: 200 });
 }
