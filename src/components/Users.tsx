@@ -1,9 +1,9 @@
-import { Employee, Squad } from "@prisma/client";
 import React from "react";
 import SadFace from "@/../public/emoji_notfound.svg";
 import Image from "next/image";
 import UserModal from "./UserModal";
 import SquadModal from "./SquadModal";
+import { Employee, Squad } from "@prisma/client";
 
 async function getUsers() {
   const url = process.env.NEXT_PUBLIC_BASE_URL;
@@ -28,8 +28,6 @@ export default async function Users() {
   const [users, squads]: [users: Employee[], squads: Squad] = await Promise.all(
     [usersData, foundSquadData]
   );
-
-  console.log(users);
 
   return (
     <section className="flex flex-col gap-10 mt-[80px] ml-[168px]">
