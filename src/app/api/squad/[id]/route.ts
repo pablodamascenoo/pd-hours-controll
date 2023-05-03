@@ -10,6 +10,11 @@ export async function GET(
   }
 ) {
   const id = parseInt(params.id);
+  if (isNaN(id))
+    return NextResponse.json(
+      { message: "id deve ser um número" },
+      { status: 400 }
+    );
 
   const squad = await prisma.squad.findFirst({
     where: {
