@@ -1,36 +1,52 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+## Build e execução
 
-## Getting Started
+Primeiro é necessário instalar as dependências do projeto com o comando abaixo
 
-First, run the development server:
+```bash
+npm install
+```
+
+### migração
+
+Após isso, siga os passos do .env.example para inserir a connection string do seu banco de dados para poder criar o banco e as tabelas com o comando abaixo:
+
+```bash
+npx prisma migrate dev
+```
+
+Feito isso, a aplicação já pode ser inicializada em modo de desenvolvimento com:
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Ou em modo de produção com:
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```bash
+npm run build
+npm start
+```
 
-[http://localhost:3000/api/hello](http://localhost:3000/api/hello) is an endpoint that uses [Route Handlers](https://beta.nextjs.org/docs/routing/route-handlers). This endpoint can be edited in `app/api/hello/route.ts`.
+Caso for fazer o deploy da aplicação, é importante substituir o comando de [migração](#migração) pelo comando abaixo:
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+```bash
+npx prisma migrate deploy
+```
 
-## Learn More
+### execução
 
-To learn more about Next.js, take a look at the following resources:
+Feito isso, basta abrir o projeto em [http://localhost:3000](http://localhost:3000) no seu browser.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Cypress
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+Alguns testes end-to-end foram feitos com cypress para testar o fluxo da aplicação. Para rodá-los basta executar o comando:
 
-## Deploy on Vercel
+```bash
+npm run cypress
+```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+Após abrir a janela do cypress, basta clicar em e2e testing, escolher onde quer executar os testes (Edge ou electron) e selecionar o teste home.cy.ts
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+### Avisos
+
+O projeto deve estar em execução para que os testes funcionem e é importante salientar que se use um banco de testes já que todas as tabelas são limpadas ao início da execução dos testes
