@@ -5,7 +5,8 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "start": "next start",
+    "start": "npx prisma migrate deploy && next start",
+    "cypress": "cypress open",
     "lint": "next lint"
   },
   "dependencies": {
@@ -14,6 +15,7 @@
     "@types/react": "18.2.0",
     "@types/react-dom": "18.2.1",
     "autoprefixer": "10.4.14",
+    "cypress": "^12.11.0",
     "dayjs": "^1.11.7",
     "eslint": "8.39.0",
     "eslint-config-next": "13.3.1",

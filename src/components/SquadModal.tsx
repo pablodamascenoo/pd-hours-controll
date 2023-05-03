@@ -47,7 +47,7 @@ export default function SquadModal() {
               type="text"
               placeholder="Digite o nome da squad"
             />
-            <Button type="submit" disabled={submited}>
+            <Button type="submit" id="button_squad_modal" disabled={submited}>
               {submited ? <LoaderSpinner /> : "Criar squad"}
             </Button>
           </form>
